@@ -3,7 +3,7 @@ import { createDom, customHook, isFunctionComponent, isSameNodeType, updateDom }
 export type JSXNode = {
   type?: string | ((...args: any[]) => any) | typeof Fragment
   props: Record<string, any>
-  dom: HTMLElement
+  dom: HTMLElement | DocumentFragment
   functionChild?: JSXNode
   fragmentChild?: JSXNode
 }
@@ -64,9 +64,9 @@ const hookForDom = (node: JSXNode) => {
   })
 }
 
-const compareNewOldChildren = (newNode: JSXNode, oldNode: JSXNode) => {
-  const newNodeChildren: JSXNode[] = newNode.props.children || []
-  const oldNodeChildren: JSXNode[] = oldNode.props.children || []
+const compareNodeChildren = (newNode: JSXNode, oldNode: JSXNode) => {
+  const newNodeChildren: JSXNode[] = newNode?.props.children || []
+  const oldNodeChildren: JSXNode[] = oldNode?.props.children || []
   const newNodeChildrenMoreThanOld = newNodeChildren.length >= oldNodeChildren.length
   for (
     let i = 0;
@@ -99,7 +99,8 @@ const traverseDom = (
   if (newNode?.type === Fragment) {
     const fragment = document.createDocumentFragment()
 
-    compareNewOldChildren(newNode, oldNode)
+    newNode.dom = fragment
+    compareNodeChildren(newNode, oldNode)
     parent.appendChild(fragment)
 
     return
@@ -122,7 +123,7 @@ const traverseDom = (
       updateDom(oldNode.dom, oldNode.props, newNode.props)
 
       newNode.dom = oldNode.dom
-      compareNewOldChildren(newNode, oldNode)
+      compareNodeChildren(newNode, oldNode)
       hookForDom(newNode)
     } else {
       parent.removeChild(oldNode.dom)
