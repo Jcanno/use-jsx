@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "types": "types/index.d.ts",
+  "files": [
+    "es",
+    "lib",
+    "types"
+  ],
   "license": "MIT",
   "scripts": {
     "build": "rollup -c",
