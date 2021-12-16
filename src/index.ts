@@ -1,17 +1,17 @@
-import { createDom, customHook, isFunctionComponent, isSameNodeType, updateDom } from './utils'
+import { createDom, customHook, isFunctionComponent, isSameElementType, updateDom } from './utils'
 
-export type JSXNode = {
+export type JSXElement = {
   type?: string | ((...args: any[]) => any) | typeof Fragment
   props: Record<string, any>
-  dom: HTMLElement | DocumentFragment
-  functionChild?: JSXNode
-  fragmentChild?: JSXNode
+  dom: HTMLElement | SVGElement | Text | DocumentFragment
+  functionChild?: JSXElement
+  fragmentChild?: JSXElement
 }
 
-type JSXDomTree = {
+type JSXElementTree = {
   [key: string]: {
-    old: JSXNode
-    new: JSXNode
+    old: JSXElement
+    new: JSXElement
   }
 }
 
@@ -39,95 +39,90 @@ const createTextElement = (text: string) => {
   }
 }
 
-const jsxDomTreeMap: JSXDomTree = {}
+const jsxElementTreeMap: JSXElementTree = {}
 
 const render = (element, container, namespace = 'default') => {
-  const jsxDomTree = jsxDomTreeMap[namespace]
-    ? (jsxDomTreeMap[namespace] = {
+  const jSXElementTree = jsxElementTreeMap[namespace]
+    ? (jsxElementTreeMap[namespace] = {
         new: element,
-        old: jsxDomTreeMap[namespace].new,
+        old: jsxElementTreeMap[namespace].new,
       })
-    : (jsxDomTreeMap[namespace] = {
+    : (jsxElementTreeMap[namespace] = {
         new: element,
         old: null,
       })
 
-  traverseDom(jsxDomTree.new, jsxDomTree.old, container)
+  traverseDom(jSXElementTree.new, jSXElementTree.old, container)
 }
 
-const hookForDom = (node: JSXNode) => {
+const hookForDom = (element: JSXElement) => {
   customHook.forEach((hook) => {
-    const onHook = node.props[hook]
+    const onHook = element.props[hook]
     if (onHook) {
-      onHook(node.dom)
+      onHook(element.dom)
     }
   })
 }
 
-const compareNodeChildren = (newNode: JSXNode, oldNode: JSXNode) => {
-  const newNodeChildren: JSXNode[] = newNode?.props.children || []
-  const oldNodeChildren: JSXNode[] = oldNode?.props.children || []
-  const newNodeChildrenMoreThanOld = newNodeChildren.length >= oldNodeChildren.length
-  for (
-    let i = 0;
-    i < (newNodeChildrenMoreThanOld ? newNodeChildren : oldNodeChildren).length;
-    i++
-  ) {
-    traverseDom(newNodeChildren[i], oldNodeChildren[i], newNode.dom)
+const compareNodeChildren = (newElement: JSXElement, oldElement: JSXElement) => {
+  const newElementChildren: JSXElement[] = newElement?.props.children || []
+  const oldElementChildren: JSXElement[] = oldElement?.props.children || []
+  const compareLength =
+    newElementChildren.length >= oldElementChildren.length
+      ? newElementChildren.length
+      : oldElementChildren.length
+  for (let i = 0; i < compareLength; i++) {
+    traverseDom(newElementChildren[i], oldElementChildren[i], newElement.dom)
   }
 }
 
-const createDomByNode = (newNode: JSXNode, parent: HTMLElement) => {
-  const dom = createDom(newNode)
-  newNode.dom = dom
+const createDomByElement = (newElement: JSXElement, parent: HTMLElement) => {
+  const dom = createDom(newElement)
+  newElement.dom = dom
 
-  const { children = [] } = newNode.props
+  const { children = [] } = newElement.props
 
   for (const child of children) {
     traverseDom(child, null, dom)
   }
 
-  hookForDom(newNode)
+  hookForDom(newElement)
   parent.appendChild(dom)
 }
 
-const traverseDom = (
-  newNode: JSXNode,
-  oldNode: JSXNode,
-  parent: HTMLElement | DocumentFragment,
-) => {
-  if (newNode?.type === Fragment) {
+const traverseDom = (newElement: JSXElement, oldElement: JSXElement, parent: JSXElement['dom']) => {
+  if (newElement?.type === Fragment) {
     const fragment = document.createDocumentFragment()
 
-    newNode.dom = fragment
-    compareNodeChildren(newNode, oldNode)
+    newElement.dom = fragment
+    compareNodeChildren(newElement, oldElement)
     parent.appendChild(fragment)
 
     return
   }
 
-  if (isFunctionComponent(newNode)) {
-    const child = (newNode.type as (...args: any[]) => any)(newNode.props)
+  if (isFunctionComponent(newElement)) {
+    const child = (newElement.type as (...args: any[]) => any)(newElement.props)
 
-    newNode.functionChild = child
-    traverseDom(child, oldNode?.functionChild, parent)
+    newElement.functionChild = child
+    traverseDom(child, oldElement?.functionChild, parent)
     return
   }
 
-  if (newNode && !oldNode) {
-    createDomByNode(newNode, parent as HTMLElement)
-  } else if (!newNode && oldNode) {
-    parent.removeChild(oldNode.dom)
-  } else if (newNode && oldNode) {
-    if (isSameNodeType(newNode, oldNode)) {
-      updateDom(oldNode.dom, oldNode.props, newNode.props)
+  if (newElement && !oldElement) {
+    createDomByElement(newElement, parent as HTMLElement)
+  } else if (!newElement && oldElement) {
+    parent.removeChild(oldElement.dom)
+  } else if (newElement && oldElement) {
+    if (isSameElementType(newElement, oldElement)) {
+      updateDom(oldElement.dom, oldElement.props, newElement.props)
 
-      newNode.dom = oldNode.dom
-      compareNodeChildren(newNode, oldNode)
-      hookForDom(newNode)
+      newElement.dom = oldElement.dom
+      compareNodeChildren(newElement, oldElement)
+      hookForDom(newElement)
     } else {
-      parent.removeChild(oldNode.dom)
-      createDomByNode(newNode, parent as HTMLElement)
+      parent.removeChild(oldElement.dom)
+      createDomByElement(newElement, parent as HTMLElement)
     }
   }
 }
