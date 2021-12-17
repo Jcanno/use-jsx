@@ -10,6 +10,16 @@
     "types"
   ],
   "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./es/index.js",
+      "require": "./lib/index.js"
+    },
+    "./jsx-runtime": {
+      "import": "./jsx-runtime.js",
+      "require": "./jsx-runtime.js"
+    }
+  },
   "scripts": {
     "build": "rollup -c",
     "prebuild": "rm -rf es dist types"

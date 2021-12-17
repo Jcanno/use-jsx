@@ -64,7 +64,7 @@ const hookForDom = (element: JSXElement) => {
   })
 }
 
-const compareNodeChildren = (newElement: JSXElement, oldElement: JSXElement) => {
+const compareChildrenElements = (newElement: JSXElement, oldElement: JSXElement) => {
   const newElementChildren: JSXElement[] = newElement?.props.children || []
   const oldElementChildren: JSXElement[] = oldElement?.props.children || []
   const compareLength =
@@ -95,7 +95,7 @@ const traverseDom = (newElement: JSXElement, oldElement: JSXElement, parent: JSX
     const fragment = document.createDocumentFragment()
 
     newElement.dom = fragment
-    compareNodeChildren(newElement, oldElement)
+    compareChildrenElements(newElement, oldElement)
     parent.appendChild(fragment)
 
     return
@@ -118,7 +118,7 @@ const traverseDom = (newElement: JSXElement, oldElement: JSXElement, parent: JSX
       updateDom(oldElement.dom, oldElement.props, newElement.props)
 
       newElement.dom = oldElement.dom
-      compareNodeChildren(newElement, oldElement)
+      compareChildrenElements(newElement, oldElement)
       hookForDom(newElement)
     } else {
       parent.removeChild(oldElement.dom)
