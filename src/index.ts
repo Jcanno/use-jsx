@@ -1,4 +1,12 @@
-import { createDom, customHook, isFunctionComponent, isSameElementType, updateDom } from './utils'
+import {
+  createDom,
+  customHook,
+  isFunctionComponent,
+  isSameElementType,
+  updateDom,
+  isObject,
+  isArray,
+} from './utils'
 
 export type JSXElement = {
   type?: string | ((...args: any[]) => any) | typeof Fragment
@@ -18,11 +26,16 @@ type JSXElementTree = {
 const Fragment = Symbol('fragment')
 
 const createElement = (type: string, props: Record<string, any> = {}, ...children) => {
+  const matchChildren = isArray(props.children)
+    ? props.children
+    : isObject(props.children)
+    ? [props.children]
+    : children
   return {
     type,
     props: {
       ...props,
-      children: children.map((child) =>
+      children: matchChildren.map((child) =>
         typeof child === 'object' ? child : createTextElement(child),
       ),
     },

@@ -1,13 +1,14 @@
 {
   "name": "use-jsx",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "types/index.d.ts",
   "files": [
     "es",
     "lib",
-    "types"
+    "types",
+    "jsx-runtime.js"
   ],
   "license": "MIT",
   "exports": {

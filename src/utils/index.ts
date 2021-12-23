@@ -110,4 +110,8 @@ export const updateDom = (dom, prevProps, nextProps) => {
   updateProperties(dom, prevProps, nextProps)
 }
 
+export const isObject = (target) => typeof target === 'object' && target !== null
+
+export const isArray = (target) => Array.isArray(target)
+
 export const isFunctionComponent = (element: JSXElement) => element?.type instanceof Function
