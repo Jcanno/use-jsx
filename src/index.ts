@@ -28,7 +28,7 @@ const Fragment = Symbol('fragment')
 const createElement = (type: string, props: Record<string, any> = {}, ...children) => {
   const matchChildren = isArray(props.children)
     ? props.children
-    : isObject(props.children)
+    : isObject(props.children) || typeof props.children === 'string'
     ? [props.children]
     : children
   return {
