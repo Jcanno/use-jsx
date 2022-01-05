@@ -6,7 +6,7 @@ use-jsx can help you use jsx with babel in native JS environment.
 
 ## How to use
 
-1. type commands in terminal to instal use-jsx:
+1. type commands in terminal to install use-jsx:
 
 ```shell
 # with npm
