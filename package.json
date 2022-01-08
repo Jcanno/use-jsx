@@ -1,6 +1,6 @@
 {
   "name": "use-jsx",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "types/index.d.ts",
@@ -21,6 +21,11 @@
       "require": "./jsx-runtime.js"
     }
   },
+  "keywords": [
+    "jsx",
+    "babel",
+    "custom"
+  ],
   "scripts": {
     "build": "rollup -c",
     "prebuild": "rm -rf es dist types"

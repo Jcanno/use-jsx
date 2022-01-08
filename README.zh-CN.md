@@ -2,11 +2,11 @@
 
 [English](https://github.com/Jcanno/use-jsx/blob/master/README.md)|简体中文
 
-use-jsx 可以结合 babel 在原生环境 使用 jsx
+`use-jsx` 可以结合 babel 在原生环境 使用 jsx
 
 ## 如何使用
 
-1. 在终端敲入以下命令
+### 1. 在终端敲入以下命令
 
 ```shell
 # with npm
@@ -16,9 +16,9 @@ npm install use-jsx
 yarn add use-jsx
 ```
 
-2. 配置 babel
+### 2. 配置 babel
 
-use-jsx 支持 babel 手动或者自动导入 jsx 两种模式配置
+`use-jsx` 支持 babel 手动或者自动导入 jsx 两种模式配置
 
 - 手动导入 jsx:
 
@@ -47,7 +47,7 @@ use-jsx 支持 babel 手动或者自动导入 jsx 两种模式配置
   }
   ```
 
-  源码中引用 use-jsx:
+  源码中引用 `use-jsx`:
 
   ```js
   import * as X from 'use-jsx'
@@ -80,7 +80,7 @@ use-jsx 支持 babel 手动或者自动导入 jsx 两种模式配置
 
   现在不用手动导入 jsx, babel 帮助我们完成了导入工作。
 
-3. 使用 render 方法生成真实 DOM 到页面中
+### 3. 使用 render 方法生成真实 DOM 到页面中
 
 ```jsx
 import { render } from 'use-jsx'
