@@ -1,6 +1,6 @@
 ## Use-Jsx
 
-English|[简体中文](https://github.com/Jcanno/use-jsx/blob/master/README-CH.md)
+English|[简体中文](https://github.com/Jcanno/use-jsx/blob/master/README.zh-CN.md)
 
 use-jsx can help you use jsx with babel in native JS environment.
 
@@ -18,7 +18,7 @@ yarn add use-jsx
 
 2. config babel
 
-use-jsx supports manual import and auto import babel config mode.
+`use-jsx` supports manual import and auto import babel config mode.
 
 - import jsx in manual:
 
@@ -47,13 +47,13 @@ use-jsx supports manual import and auto import babel config mode.
   }
   ```
 
-  import use-jsx in your source code:
+  import `use-jsx` in your source code:
 
   ```js
   import * as X from 'use-jsx'
   ```
 
-  X needs consistent with your babel config.
+  X needs to be consistent with your babel config.
 
 - import jsx in automatic mode:
 
@@ -78,11 +78,11 @@ use-jsx supports manual import and auto import babel config mode.
   }
   ```
 
-  You need't import use-jsx anymore, it's done by babel.
+  You don't need import use-jsx anymore, it's all done by babel.
 
 3. render your jsx
 
-use render to generator Actual DOM to HTML page.
+use `render` to generate Actual DOM to HTML page.
 
 ```jsx
 import { render } from 'use-jsx'
