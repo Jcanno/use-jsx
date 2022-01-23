@@ -2,7 +2,13 @@
 
 [English](https://github.com/Jcanno/use-jsx/blob/master/README.md)|简体中文
 
-`use-jsx` 可以结合 babel 在原生环境 使用 jsx
+`use-jsx` 可以结合 babel 在原生环境 使用 jsx, 适用于开发页面中小型且简单的组件
+
+## 特性
+
+- 支持 Fragment
+- 支持函数组件
+- 支持虚拟 DOM 树命名空间
 
 ## 如何使用
 
@@ -96,3 +102,18 @@ render(
 ```
 
 render 方法接收三个参数，第一个为 jsx 或者返回 jsx 的函数，第二个为 jsx 挂载的 DOM 节点，最后个参数为节点树的命名空间，默认为`default`
+
+### useDom
+
+如果我们想要获取真实 DOM 元素，可以使用`useDom`
+
+```js
+function MyComponent() {
+  // `useDom`可以提供真实DOM，我们可以根据真实DOM元素做很多事，例如通过`getBoundingClientRect`获取元素的尺寸
+  const useDom = (dom) => {
+    const domRect = dom.getBoundingClientRect()
+  }
+
+  return <div id={POPOVERID} useDom={useDom} />
+}
+```

@@ -2,7 +2,13 @@
 
 English|[简体中文](https://github.com/Jcanno/use-jsx/blob/master/README.zh-CN.md)
 
-`use-jsx` can help you use jsx with babel in native JS environment.
+`use-jsx` can help you use jsx with babel in native JS environment, for developing simple component in page.
+
+## Features
+
+- Fragment
+- Function Component
+- virtual dom tree namespace
 
 ## How to use
 
@@ -98,3 +104,18 @@ render(
 ```
 
 render receives three arguments, first for custom jsx or function which returns jsx, second for real element which jsx mouted, the last is namespace for tree, `default` by default
+
+### useDom
+
+if we want to get Actual DOM, `useDom` can help.
+
+```js
+function MyComponent() {
+  // useDom offer div actual DOM, so we can do some things such as getting div actual size to `getBoundingClientRect`
+  const useDom = (dom) => {
+    const domRect = dom.getBoundingClientRect()
+  }
+
+  return <div id={POPOVERID} useDom={useDom} />
+}
+```
