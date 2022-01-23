@@ -105,7 +105,7 @@ render(
 
 render receives three arguments, first for custom jsx or function which returns jsx, second for real element which jsx mouted, the last is namespace for tree, `default` by default
 
-### useDom
+### 4. useDom
 
 if we want to get Actual DOM, `useDom` can help.
 

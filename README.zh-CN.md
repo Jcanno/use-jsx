@@ -103,7 +103,7 @@ render(
 
 render 方法接收三个参数，第一个为 jsx 或者返回 jsx 的函数，第二个为 jsx 挂载的 DOM 节点，最后个参数为节点树的命名空间，默认为`default`
 
-### useDom
+### 4. useDom
 
 如果我们想要获取真实 DOM 元素，可以使用`useDom`
 
